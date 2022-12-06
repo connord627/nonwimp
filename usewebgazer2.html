@@ -2,10 +2,11 @@
 <HTML>
 <HEAD>
 <META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
-<TITLE>Simpler program that uses WebGazer.js</TITLE>
+<TITLE>WebGazer Game</TITLE>
+
+<!-- <script src="https://webgazer.cs.brown.edu/webgazer.js"> </script> -->
 
 <script src="webgazer.js"></script>
-
 <script>
 /*
  * Bare bones program that uses WebGazer.js
@@ -19,8 +20,68 @@
 
 function inTarget (data) { 
     // Weird offset determined empirically, other dimensions match our HTML
-    let xoffset = -250
+    let xoffset = -350
+    for (i = 0; i < enemylist.length; i++){
+        //Not working currently
+        if (data && data.x > enemylist[i].getX()+xoffset && data.x < enemylist[i].getX()+xoffset+35 && data.y > enemylist[i].getY && data.y < enemylist[i].getY()+35){
+            console.log("Hit a box")
+        }
+    }
     return data && data.x > 400+xoffset && data.x < 400+xoffset+100 && data.y > 300 && data.y < 300+100
+}
+
+enemylist = [];
+
+//Creates new enemies and puts them into the enemy list
+function spawnEnemies(numenemies) {
+    for (i = 0; i < numenemies; i++) {
+        newenemy = new Enemy()
+        enemylist.push(newenemy)
+    }
+}
+
+//Deletes the first n number of enemies from the list
+function deleteEnemies(numenemies) {
+    enemylist.splice(0, numenemies)
+}
+
+//Clears the whole screen for redrawing
+function Clear(){
+	var canvas = document.getElementById("canvas")
+	var ctx = canvas.getContext("2d");
+	
+	ctx.clearRect(0,0,1000,1000);
+}
+
+//Draws all of the enemies in the enemy list
+function drawEnemies() {
+    Clear();
+
+    for (i = 0; i < enemylist.length; i++) {
+        var canvas = document.getElementById("canvas")
+	    var context = canvas.getContext("2d");
+        context.fillRect(enemylist[i].getX(), enemylist[i].getY(), 35, 35);
+    }
+}
+
+/*
+Enemy class: 
+x = x coordinate on canvas
+y = y coordinate on canvas
+*/
+class Enemy {
+    constructor(){
+        this.x = Math.floor(Math.random() * 800);
+        this.y = Math.floor(Math.random() * 800);
+    }
+
+    getX() {
+        return this.x
+    }
+
+    getY() {
+        return this.y
+    }
 }
 
 /*
@@ -37,6 +98,7 @@ function gaze (data, clock) {
     let target = document.getElementById("target1")
 
     if (inTarget (data)) { 
+        //console.log("In target")
         target.style.color = "red" 
 	target.style.background = "black" 
 
@@ -52,13 +114,25 @@ function gaze (data, clock) {
 }
 
 window.onload = function() {
+    var canvas = document.getElementById('canvas');
     webgazer.setGazeListener(gaze) 
 	.begin() 
+    //Put a calibrate function here
+    var intervalId = window.setInterval(function(){
+        //These are what we can change depending on difficulty
+        spawnEnemies(2)
+        deleteEnemies(1)
+        drawEnemies()
+        //can also change the number of milliseconds below
+    }, 5000);
 };
+
+
 </script>
 </head>
 
 <BODY LANG="en-US" LINK="#0000ff" DIR="LTR">
+    <canvas id="canvas" width="1000" height="1000"></canvas>
     <div id="target1" style="position:absolute; border-style:solid; border-color:red; right:400px; top:300px; height:100px; width:100px">
 	<h2>Try me!</h2>
     </div>
