@@ -31,6 +31,7 @@ function inTarget (data) {
 }
 
 enemylist = [];
+var intervalId
 
 //Creates new enemies and puts them into the enemy list
 function spawnEnemies(numenemies) {
@@ -119,7 +120,7 @@ window.onload = function() {
 	.begin() 
     //Put a calibrate function here
     //create the variable outside the function
-    var intervalId = window.setInterval(function(){
+    intervalId = window.setInterval(function(){
         //These are what we can change depending on difficulty
         spawnEnemies(2)
         deleteEnemies(1)
@@ -128,14 +129,59 @@ window.onload = function() {
     }, 5000);
 };
 
+function reset() {
+    deleteEnemies(enemylist.length)
+    drawEnemies()
+}
+
+function pause() {
+    var btn = document.getElementById("pause")
+    if (btn.value == "Pause") {
+        btn.value = "Unpause"
+        clearInterval(intervalId)
+    }
+    else {
+        btn.value = "Pause"
+        intervalId = window.setInterval(function(){
+        spawnEnemies(2)
+        deleteEnemies(1)
+        drawEnemies()
+    }, 5000);
+    }
+}
+
+function buttonPressed (str) {
+    if (str == "reset") {
+        reset()
+    }
+    else if (str == "pause") {
+        pause()
+    }
+}
+
 
 </script>
 </head>
 
 <BODY LANG="en-US" LINK="#0000ff" DIR="LTR">
+
+
+
+
     <canvas id="canvas" width="1000" height="1000"></canvas>
     <div id="target1" style="position:absolute; border-style:solid; border-color:red; right:400px; top:300px; height:100px; width:100px">
 	<h2>Try me!</h2>
     </div>
+
+    <br>
+
+    <input type=button value="Reset"
+	onclick="buttonPressed('reset')">
+
+    <input type=button id="pause" value="Pause"
+	onclick="buttonPressed('pause')">
+
+    <label for="html">Score: </label>
+
 </BODY>
 </HTML>
