@@ -20,9 +20,9 @@
 
 function inTarget (data) { 
     // Weird offset determined empirically, other dimensions match our HTML
-    let xoffset = -350
+    let xoffset = 350
     for (i = 0; i < enemylist.length; i++){
-        //Not working currently
+        //Offset is working, but this statement is not firing for some reason
         if (data && data.x > enemylist[i].getX()+xoffset && data.x < enemylist[i].getX()+xoffset+35 && data.y > enemylist[i].getY && data.y < enemylist[i].getY()+35){
             console.log("Hit a box")
         }
@@ -118,6 +118,7 @@ window.onload = function() {
     webgazer.setGazeListener(gaze) 
 	.begin() 
     //Put a calibrate function here
+    //create the variable outside the function
     var intervalId = window.setInterval(function(){
         //These are what we can change depending on difficulty
         spawnEnemies(2)
