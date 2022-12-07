@@ -150,6 +150,31 @@ function pause() {
     }
 }
 
+function addScore() {
+    var label = document.getElementById("score")
+    var m = label.textContent.match(/^(.*?)(\d+)$/);
+    var value = parseInt(m[2], 10);
+    value = isNaN(value) ? 0 : value;
+    label.textContent = m[1] + (value + 1)
+}
+
+function substractScore() {
+    var label = document.getElementById("score")
+    var m = label.textContent.match(/^(.*?)(\d+)$/);
+    var value = parseInt(m[2], 10);
+    value = isNaN(value) ? 0 : value;
+    label.textContent = 
+    m[1] + (value - 1)
+}
+
+function addLevel() {
+    var label = document.getElementById("level")
+    var m = label.textContent.match(/^(.*?)(\d+)$/);
+    var value = parseInt(m[2], 10);
+    value = isNaN(value) ? 0 : value;
+    label.textContent = m[1] + (value + 1)
+}
+
 function buttonPressed (str) {
     if (str == "reset") {
         reset()
@@ -181,7 +206,10 @@ function buttonPressed (str) {
     <input type=button id="pause" value="Pause"
 	onclick="buttonPressed('pause')">
 
-    <label for="html">Score: </label>
+    <label >Score: </label>
+    <label id="score">0</label>
+    <label > Level: </label>
+    <label id="level">1</label>
 
 </BODY>
 </HTML>
