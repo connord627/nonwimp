@@ -21,12 +21,6 @@
 function inTarget (data) { 
     // Weird offset determined empirically, other dimensions match our HTML
     let xoffset = 350
-    for (i = 0; i < enemylist.length; i++){
-        //Offset is working, but this statement is not firing for some reason
-        if (data && data.x > enemylist[i].getX()+xoffset && data.x < enemylist[i].getX()+xoffset+35 && data.y > enemylist[i].getY && data.y < enemylist[i].getY()+35){
-            console.log("Hit a box")
-        }
-    }
     return data && data.x > 400+xoffset && data.x < 400+xoffset+100 && data.y > 300 && data.y < 300+100
 }
 
@@ -95,6 +89,14 @@ function gaze (data, clock) {
     const delay = 400 // ms
 
     if (data==null) return;
+
+    //Checks to see if we are in contact with an enemy
+    let xoffset = 350
+    for (i = 0; i < enemylist.length; i++){
+        if (data.x > enemylist[i].getX()+xoffset && data.x < enemylist[i].getX()+xoffset+35 && data.y > enemylist[i].getY() && data.y < enemylist[i].getY()+35){
+            console.log("Hit a box")
+        }
+    }
 
     let target = document.getElementById("target1")
 
