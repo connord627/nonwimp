@@ -27,6 +27,9 @@ function inTarget (data) {
 enemylist = [];
 var intervalId
 
+var timeInterval = 5000
+var enemySpawns = 2
+
 //Creates new enemies and puts them into the enemy list
 function spawnEnemies(numenemies) {
     for (i = 0; i < numenemies; i++) {
@@ -95,6 +98,9 @@ function gaze (data, clock) {
     for (i = 0; i < enemylist.length; i++){
         if (data.x > enemylist[i].getX()+xoffset && data.x < enemylist[i].getX()+xoffset+35 && data.y > enemylist[i].getY() && data.y < enemylist[i].getY()+35){
             console.log("Hit a box")
+            enemylist.splice(i,1)
+            addScore()
+            drawEnemies()
         }
     }
 
@@ -124,11 +130,11 @@ window.onload = function() {
     //create the variable outside the function
     intervalId = window.setInterval(function(){
         //These are what we can change depending on difficulty
-        spawnEnemies(2)
+        spawnEnemies(enemySpawns)
         deleteEnemies(1)
         drawEnemies()
         //can also change the number of milliseconds below
-    }, 5000);
+    }, timeInterval);
 };
 
 function reset() {
@@ -145,10 +151,10 @@ function pause() {
     else {
         btn.value = "Pause"
         intervalId = window.setInterval(function(){
-        spawnEnemies(2)
+        spawnEnemies(enemySpawns)
         deleteEnemies(1)
         drawEnemies()
-    }, 5000);
+    }, timeInterval);
     }
 }
 
@@ -156,8 +162,17 @@ function addScore() {
     var label = document.getElementById("score")
     var m = label.textContent.match(/^(.*?)(\d+)$/);
     var value = parseInt(m[2], 10);
-    value = isNaN(value) ? 0 : value;
-    label.textContent = m[1] + (value + 1)
+    if ((value + 1) == 10) {
+        alert("Next level!")
+        label.textContent = "0"
+        addLevel()
+        reset()
+        increaseDifficulty()
+    }
+    else {
+        value = isNaN(value) ? 0 : value;
+        label.textContent = m[1] + (value + 1)
+    }
 }
 
 function substractScore() {
@@ -184,6 +199,11 @@ function buttonPressed (str) {
     else if (str == "pause") {
         pause()
     }
+}
+
+function increaseDifficulty() {
+    enemySpawns++
+    timeInterval =- 200
 }
 
 
