@@ -125,16 +125,64 @@ function gaze (data, clock) {
 }
 
 window.onload = function() {
+
+    alert("5 Dots will appear on the screen for about 30 seconds. To calibrate," +
+    " click each dot with the mouse 2-5 times while also looking at it." + 
+    "\nNOTE: Only do this after your face has been recognized by the camera.")
+
     var canvas = document.getElementById('canvas');
     webgazer.setGazeListener(gaze) 
 	.begin() 
     //Put a calibrate function here
+
+    let calibrated = false
+    let i = 0
+    calibrate_interval = window.setInterval(function(){
+        var canvas = document.getElementById("canvas")
+        var ctx = canvas.getContext("2d");
+        
+        ctx.fillStyle = "black";
+
+        ctx.beginPath();
+        ctx.arc(500, 50, 10, 0, 2 * Math.PI);
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.arc(950, 50, 10, 0, 2 * Math.PI);
+        ctx.fill();
+        
+        ctx.beginPath();
+        ctx.arc(950, 550, 10, 0, 2 * Math.PI);
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.arc(500, 550, 10, 0, 2 * Math.PI);
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.arc(100, 550, 10, 0, 2 * Math.PI);
+        ctx.fill();
+
+        ctx.fillStyle = "black";
+        //ctx.stroke();
+        //ctx.fill();
+
+        if (i == 1) {
+            clearInterval(calibrate_interval)
+            calibrated = true
+        }
+        i++
+    }, 30000)
+
+
     //create the variable outside the function
     intervalId = window.setInterval(function(){
-        //These are what we can change depending on difficulty
-        spawnEnemies(enemySpawns)
-        deleteEnemies(1)
-        drawEnemies()
+        if (calibrated){
+            //These are what we can change depending on difficulty
+            spawnEnemies(enemySpawns)
+            deleteEnemies(1)
+            drawEnemies()
+        }
         //can also change the number of milliseconds below
     }, timeInterval);
 };
