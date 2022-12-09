@@ -25,6 +25,8 @@ function inTarget (data) {
 }
 
 enemylist = [];
+
+// Creating variables so we can edit them
 var intervalId
 
 var timeInterval = 5000
@@ -137,11 +139,13 @@ window.onload = function() {
     }, timeInterval);
 };
 
+// Resetting the entire board
 function reset() {
     deleteEnemies(enemylist.length)
     drawEnemies()
 }
 
+// Pausing the game
 function pause() {
     var btn = document.getElementById("pause")
     if (btn.value == "Pause") {
@@ -158,11 +162,12 @@ function pause() {
     }
 }
 
+// Adding 1 to the score, if score is 9 proceed to next level
 function addScore() {
     var label = document.getElementById("score")
     var m = label.textContent.match(/^(.*?)(\d+)$/);
     var value = parseInt(m[2], 10);
-    if ((value + 1) == 10) {
+    if (value == 9) {
         alert("Next level!")
         label.textContent = "0"
         addLevel()
@@ -175,6 +180,7 @@ function addScore() {
     }
 }
 
+// Substracting 1 from score if needed
 function substractScore() {
     var label = document.getElementById("score")
     var m = label.textContent.match(/^(.*?)(\d+)$/);
@@ -184,6 +190,7 @@ function substractScore() {
     m[1] + (value - 1)
 }
 
+// Adding 1 to level
 function addLevel() {
     var label = document.getElementById("level")
     var m = label.textContent.match(/^(.*?)(\d+)$/);
@@ -192,6 +199,7 @@ function addLevel() {
     label.textContent = m[1] + (value + 1)
 }
 
+// OnPress function
 function buttonPressed (str) {
     if (str == "reset") {
         reset()
@@ -201,6 +209,7 @@ function buttonPressed (str) {
     }
 }
 
+// Variables can be changed
 function increaseDifficulty() {
     enemySpawns++
     timeInterval =- 200
