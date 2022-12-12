@@ -125,6 +125,13 @@ function gaze (data, clock) {
     */
 }
 
+function nextLevel() {
+    alert("Next level!")
+    addLevel()
+    increaseDifficulty()
+    setTimeout(nextLevel,10000)
+}
+
 window.onload = function() {
 
     alert("5 Dots will appear on the screen for about 30 seconds. To calibrate," +
@@ -171,6 +178,7 @@ window.onload = function() {
         if (i == 1) {
             clearInterval(calibrate_interval)
             calibrated = true
+            setTimeout(nextLevel,10000)
         }
         i++
     }, 30000)
@@ -216,27 +224,8 @@ function addScore() {
     var label = document.getElementById("score")
     var m = label.textContent.match(/^(.*?)(\d+)$/);
     var value = parseInt(m[2], 10);
-    if (value == 9) {
-        alert("Next level!")
-        label.textContent = "0"
-        addLevel()
-        reset()
-        increaseDifficulty()
-    }
-    else {
-        value = isNaN(value) ? 0 : value;
-        label.textContent = m[1] + (value + 1)
-    }
-}
-
-// Substracting 1 from score if needed
-function substractScore() {
-    var label = document.getElementById("score")
-    var m = label.textContent.match(/^(.*?)(\d+)$/);
-    var value = parseInt(m[2], 10);
     value = isNaN(value) ? 0 : value;
-    label.textContent = 
-    m[1] + (value - 1)
+    label.textContent = m[1] + (value + 1)
 }
 
 // Adding 1 to level
